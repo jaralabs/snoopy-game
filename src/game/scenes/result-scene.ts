@@ -11,6 +11,8 @@ export class ResultScene extends Phaser.Scene {
 
     const state = readGameState(this);
     const unlockedRewards = this.getUnlockedRewards(state.heartsCollected);
+    const displayHeight = this.scale.displaySize.height;
+    const compact = displayHeight <= 430;
     const rewardMessage =
       state.rewardTier === "high"
         ? "Nivel top desbloqueado."
@@ -18,76 +20,81 @@ export class ResultScene extends Phaser.Scene {
           ? "Nivel medio desbloqueado."
           : "Nivel base desbloqueado.";
 
-    const panel = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, 700, 420, 0x020617, 0.82);
+    const panelW = compact ? 760 : 700;
+    const panelH = compact ? 332 : 420;
+    const panelX = this.scale.width / 2;
+    const panelY = this.scale.height / 2;
+    const panelBottom = panelY + panelH / 2;
+
+    const panel = this.add.rectangle(panelX, panelY, panelW, panelH, 0x020617, 0.82);
     panel.setStrokeStyle(3, 0x93c5fd, 0.95);
 
+    const buttonsY = panelBottom - (compact ? 30 : 40);
+    const cardsGap = compact ? 28 : 36;
+    const cardsStartY = buttonsY - cardsGap * unlockedRewards.length - (compact ? 16 : 18);
+    const instructionY = cardsStartY - (compact ? 28 : 40);
+    const rewardY = instructionY - (compact ? 24 : 34);
+    const scoreY = rewardY - (compact ? 34 : 44);
+    const titleY = scoreY - (compact ? 40 : 58);
+
     this.add
-      .text(this.scale.width / 2, 130, "Canje de premios", {
+      .text(panelX, titleY, "Canje de premios", {
         color: "#f8fafc",
         fontFamily: "Arial",
-        fontSize: "32px",
+        fontSize: compact ? "26px" : "32px",
         fontStyle: "bold"
       })
       .setOrigin(0.5)
       .setStroke("#0f172a", 5);
 
-    this.createFloatingHearts(this.scale.width / 2, 96);
+    if (!compact) {
+      this.createFloatingHearts(panelX, titleY - 34);
+    }
 
     this.add
-      .text(this.scale.width / 2, 208, `Corazones atrapados: ${state.heartsCollected}`, {
+      .text(panelX, scoreY, `Corazones atrapados: ${state.heartsCollected}`, {
         color: "#f8fafc",
         fontFamily: "Arial",
-        fontSize: "38px",
+        fontSize: compact ? "30px" : "38px",
         fontStyle: "bold"
       })
       .setOrigin(0.5)
       .setStroke("#0f172a", 6);
 
     this.add
-      .text(this.scale.width / 2, 246, rewardMessage, {
+      .text(panelX, rewardY, rewardMessage, {
         color: "#fde68a",
         fontFamily: "Arial",
-        fontSize: "22px",
+        fontSize: compact ? "18px" : "22px",
         fontStyle: "bold"
       })
       .setOrigin(0.5)
       .setStroke("#1f2937", 5);
 
     this.add
-      .text(this.scale.width / 2, 278, "Escoge 1 premio desbloqueado con tus corazones:", {
+      .text(panelX, instructionY, "Escoge 1 premio desbloqueado con tus corazones:", {
         color: "#bfdbfe",
         fontFamily: "Arial",
-        fontSize: "18px",
+        fontSize: compact ? "15px" : "18px",
         fontStyle: "bold"
       })
       .setOrigin(0.5)
       .setStroke("#0f172a", 4);
 
     let selectedReward = unlockedRewards[0];
-    const selectedText = this.add
-      .text(this.scale.width / 2, 430, `Premio seleccionado: ${selectedReward}`, {
-        color: "#f8fafc",
-        fontFamily: "Arial",
-        fontSize: "16px",
-        fontStyle: "bold",
-        align: "center",
-        wordWrap: { width: 620 }
-      })
-      .setOrigin(0.5)
-      .setStroke("#0f172a", 3);
 
     const cards: Array<{ bg: Phaser.GameObjects.Rectangle; text: Phaser.GameObjects.Text; label: string }> = [];
     unlockedRewards.forEach((label, index) => {
-      const y = 316 + index * 36;
+      const y = cardsStartY + index * cardsGap;
       const bg = this.add
-        .rectangle(this.scale.width / 2, y, 600, 30, 0x1e293b, 0.88)
+        .rectangle(panelX, y, compact ? 640 : 600, compact ? 24 : 30, 0x1e293b, 0.88)
         .setStrokeStyle(2, 0x334155, 1)
         .setInteractive({ useHandCursor: true });
       const text = this.add
-        .text(this.scale.width / 2, y, label, {
+        .text(panelX, y, label, {
           color: "#e2e8f0",
           fontFamily: "Arial",
-          fontSize: "15px"
+          fontSize: compact ? "13px" : "15px"
         })
         .setOrigin(0.5);
       cards.push({ bg, text, label });
@@ -100,7 +107,6 @@ export class ResultScene extends Phaser.Scene {
         card.bg.setStrokeStyle(2, selected ? 0xfde68a : 0x334155, 1);
         card.text.setColor(selected ? "#fef08a" : "#e2e8f0");
       });
-      selectedText.setText(`Premio seleccionado: ${selectedReward}`);
     };
 
     cards.forEach((card) => {
@@ -111,12 +117,12 @@ export class ResultScene extends Phaser.Scene {
     });
     paintCards();
 
-    const replay = this.makeButton(this.scale.width / 2 - 140, 500, "Repetir");
+    const replay = this.makeButton(panelX - (compact ? 108 : 120), buttonsY, "Repetir", compact);
     replay.on("pointerdown", () => {
       this.scene.start("WalkScene", { startX: 100 });
     });
 
-    const exit = this.makeButton(this.scale.width / 2 + 140, 500, "Salir");
+    const exit = this.makeButton(panelX + (compact ? 108 : 120), buttonsY, "Salir", compact);
     exit.on("pointerdown", () => {
       writeGameState(this, { score: 0, heartsCollected: 0 });
       this.scene.start("WalkScene", { startX: 100 });
@@ -136,17 +142,19 @@ export class ResultScene extends Phaser.Scene {
     return unlocked.slice(-3);
   }
 
-  private makeButton(x: number, y: number, label: string): Phaser.GameObjects.Container {
-    const bg = this.add.rectangle(0, 0, 190, 58, 0x1e293b, 0.95).setStrokeStyle(2, 0x93c5fd, 1);
+  private makeButton(x: number, y: number, label: string, compact: boolean): Phaser.GameObjects.Container {
+    const w = compact ? 170 : 190;
+    const h = compact ? 50 : 58;
+    const bg = this.add.rectangle(0, 0, w, h, 0x1e293b, 0.95).setStrokeStyle(2, 0x93c5fd, 1);
     const text = this.add
       .text(0, 0, label, {
         color: "#e2e8f0",
         fontFamily: "Arial",
-        fontSize: "26px"
+        fontSize: compact ? "22px" : "26px"
       })
       .setOrigin(0.5);
 
-    const container = this.add.container(x, y, [bg, text]).setSize(190, 58);
+    const container = this.add.container(x, y, [bg, text]).setSize(w, h);
     container.setInteractive({ useHandCursor: true });
     container.on("pointerover", () => {
       bg.setFillStyle(0x334155, 0.98);
