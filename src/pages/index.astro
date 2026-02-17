@@ -1,0 +1,21 @@
+---
+import Game from "../components/game";
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snoopy Gift Game</title>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <main class="mx-auto flex min-h-screen w-full items-center justify-center p-4">
+      <section class="w-full max-w-5xl overflow-hidden rounded-2xl border border-slate-800 bg-black shadow-2xl shadow-black/60">
+        <div class="aspect-video w-full">
+          <Game client:load />
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
