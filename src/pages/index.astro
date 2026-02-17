@@ -9,10 +9,10 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snoopy Gift Game</title>
   </head>
-  <body class="min-h-screen bg-slate-950 text-slate-100">
-    <main class="mx-auto flex min-h-screen w-full items-center justify-center p-4">
-      <section class="w-full max-w-5xl overflow-hidden rounded-2xl border border-slate-800 bg-black shadow-2xl shadow-black/60">
-        <div class="aspect-video w-full">
+  <body class="h-[100dvh] overflow-hidden bg-slate-950 text-slate-100">
+    <main class="safe-shell mx-auto flex h-[100dvh] w-full items-center justify-center">
+      <section class="h-full w-full overflow-hidden rounded-xl border border-slate-800 bg-black shadow-2xl shadow-black/60 sm:h-auto sm:max-w-5xl sm:rounded-2xl">
+        <div class="h-full w-full sm:aspect-video">
           <Game client:load />
         </div>
       </section>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 const Game = () => {
   useEffect(() => {
@@ -21,7 +21,7 @@ const Game = () => {
     };
   }, []);
 
-  return <div id="game-host" className="h-full w-full" />;
+  return React.createElement("div", { id: "game-host", className: "h-full w-full" });
 };
 
 export default Game;

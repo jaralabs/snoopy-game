@@ -61,7 +61,7 @@ export class HeartGameScene extends Phaser.Scene {
     });
 
     this.scoreText = this.add
-      .text(20, 18, `Corazones: ${this.score}`, {
+      .text(34, 34, `Corazones: ${this.score}`, {
         color: "#f8fafc",
         fontFamily: "Arial",
         fontSize: "24px",
@@ -71,7 +71,7 @@ export class HeartGameScene extends Phaser.Scene {
     this.scoreText.setStroke("#0f172a", 4);
 
     this.goalText = this.add
-      .text(this.scale.width - 20, 18, `Meta: ${this.heartsGoal}  |  Faltan: ${Math.max(0, this.heartsGoal - this.score)}`, {
+      .text(this.scale.width - 34, 34, `Meta: ${this.heartsGoal}  |  Faltan: ${Math.max(0, this.heartsGoal - this.score)}`, {
         color: "#f8fafc",
         fontFamily: "Arial",
         fontSize: "24px",

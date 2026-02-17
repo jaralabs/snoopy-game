@@ -73,7 +73,7 @@ export class WalkScene extends Phaser.Scene {
     let runningScore = state.score;
     let runningHearts = state.heartsCollected;
     this.walkHeartsText = this.add
-      .text(this.scale.width - 20, 18, `Corazones: ${runningHearts}`, {
+      .text(this.scale.width - 36, 34, `Corazones: ${runningHearts}`, {
         color: "#f8fafc",
         fontFamily: "Arial",
         fontSize: "28px",

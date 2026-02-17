@@ -12,3 +12,10 @@ body {
 canvas {
   image-rendering: pixelated;
 }
+
+.safe-shell {
+  padding-top: max(20px, env(safe-area-inset-top));
+  padding-right: max(20px, env(safe-area-inset-right));
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  padding-left: max(20px, env(safe-area-inset-left));
+}
