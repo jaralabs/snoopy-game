@@ -8,10 +8,11 @@ export class BootScene extends Phaser.Scene {
   }
 
   preload(): void {
+    const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
     Object.entries(IMAGE_ASSET_PATHS).forEach(([key, path]) => {
       this.load.image(key, path);
     });
-    this.load.image("snoopy_sprite_sheet", "/assets/snoopy-sprite-sheet.png");
+    this.load.image("snoopy_sprite_sheet", `${base}assets/snoopy-sprite-sheet.png`);
   }
 
   create(): void {
